@@ -6,7 +6,9 @@
 resource_local_to_scene = true
 extents = Vector3( 0.5, 0.5, 0.1 )
 
-[node name="CharacterPlane" type="KinematicBody"]
+[node name="CharacterPlane" type="KinematicBody" groups=[
+"Fadable",
+]]
 collision_layer = 4
 collision_mask = 0
 script = ExtResource( 1 )

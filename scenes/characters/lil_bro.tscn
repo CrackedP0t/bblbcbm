@@ -195,6 +195,8 @@ collision_mask = 2
 size = Vector2( 0.564545, 0.833 )
 collision_side = 0
 texture = ExtResource( 2 )
+sprite_translation = Vector3( 0.00167415, 0.00251122, 0 )
+sprite_rotation = Vector3( 0, -180, 0 )
 
 [node name="Area" type="Area" parent="CharacterPlane"]
 collision_layer = 0

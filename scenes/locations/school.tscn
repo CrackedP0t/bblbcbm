@@ -20,6 +20,7 @@ render_mode cull_disabled, unshaded;
 
 uniform sampler2D tex;
 uniform float scale;
+uniform float fade;
 
 varying vec2 tex_position;
 
@@ -29,12 +30,13 @@ void vertex() {
 
 void fragment(){
 	vec2 tp = tex_position + WORLD_MATRIX[3].xz * vec2(1.0, -1.0);
-	ALBEDO = texture(tex, tp / scale).xyz;
+	ALBEDO = texture(tex, tp / scale).xyz * fade;
 }"
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
-shader_param/scale = 1.0
+shader_param/scale = 2.0
+shader_param/fade = 1.0
 shader_param/tex = ExtResource( 10 )
 
 [node name="School" type="Spatial"]
@@ -180,15 +182,20 @@ uv_scale = 3.0
 dimensions = Vector2( 6, 3 )
 rects = [ Rect2( 0, 0, 1, 2 ), Rect2( 0, 2, 6, 1 ), Rect2( 2, 0, 4, 2 ) ]
 
-[node name="CharacterPlane" parent="." instance=ExtResource( 12 )]
+[node name="Tree" parent="." instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.2324, 0, -1.02355 )
 collision_layer = 2
 collision_mask = 1
 size = Vector2( 6.7221, 6 )
+collision_depth = 0.31
+collision_rect = Rect2( 0.22, 0, 0.05, 1 )
 texture = ExtResource( 13 )
 sprite_translation = Vector3( 0, -0.1, 0 )
+should_fade = true
 
-[node name="Grass" type="MeshInstance" parent="."]
+[node name="Grass" type="MeshInstance" parent="." groups=[
+"Fadable",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.001, 0 )
 material_override = SubResource( 2 )
 mesh = ExtResource( 11 )

@@ -4,9 +4,10 @@ extends KinematicBody
 
 export var size = Vector2.ONE setget set_size
 export(int, "Height", "Width", "Disable") var lock_scale = 0 setget set_lock_scale
-export var collision_enabled = true setget set_collision_enabled
-export var collision_depth = 0.1 setget set_collision_depth
-export(int, "Back", "Center", "Front") var collision_side = 1 setget set_collision_side
+export var collision_enabled = true
+export var collision_depth = 0.1
+export(Rect2) var collision_rect = Rect2(0, 0, 1, 1)
+export(int, "Back", "Center", "Front") var collision_side = 1
 export(Texture) var texture = null setget set_texture
 export var centered_x = true setget set_centered_x
 export var centered_y = false setget set_centered_y
@@ -14,6 +15,22 @@ export(int, "Disabled", "Discard", "Opaque Pre-Pass") var alpha_cut = 0 setget s
 export var sprite_centered = true setget set_sprite_centered
 export(Vector3) var sprite_translation = Vector3.ZERO setget set_sprite_translation
 export(Vector3) var sprite_rotation = Vector3.ZERO setget set_sprite_rotation
+export var should_fade = false
+
+var fadable = Fadable.new()
+
+func _process(delta):
+	if should_fade:
+		var fade = fadable.process(delta)
+		$Sprite3D.modulate = Color(fade, fade, fade)
+	
+func fade_in():
+	if should_fade:
+		fadable.fade_in()
+	
+func fade_out():
+	if should_fade:
+		fadable.fade_out()
 
 func set_size(new):
 	size = new
@@ -21,18 +38,6 @@ func set_size(new):
 	
 func set_lock_scale(new):
 	lock_scale = new
-	recalculate()
-	
-func set_collision_enabled(new):
-	collision_enabled = new
-	recalculate()
-	
-func set_collision_depth(new):
-	collision_depth = new
-	recalculate()
-	
-func set_collision_side(new):
-	collision_side = new
 	recalculate()
 	
 func set_texture(new):
@@ -68,9 +73,12 @@ func recalculate():
 	
 	var shape = get_node_or_null("CollisionShape")
 	if shape:
+		var r = collision_rect
 		shape.disabled = !collision_enabled
-		shape.translation = trans + Vector3(0, 0, (collision_side - 1) * collision_depth)
-		shape.shape.extents = Vector3(size.x / 2, size.y / 2, collision_depth)
+		shape.translation = trans + Vector3(r.position.x, r.position.y,
+			(collision_side - 1) * collision_depth)
+		shape.shape.extents = Vector3((r.size.x * size.x) / 2,
+			(r.size.y * size.y) / 2, collision_depth)
 
 	var sprite = get_node_or_null("Sprite3D")
 	if sprite:
@@ -99,6 +107,5 @@ func recalculate():
 		sprite.translation = int(sprite_centered) * trans + sprite_translation
 		sprite.rotation_degrees = sprite_rotation
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	recalculate()
