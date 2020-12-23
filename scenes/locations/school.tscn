@@ -1,28 +1,30 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://assets/textures/TexturesCom_BrickSmallPainted0096_1_seamless_S.jpg" type="Texture" id=1]
 [ext_resource path="res://assets/textures/TexturesCom_Carpet0013_1_seamless_S.jpg" type="Texture" id=2]
 [ext_resource path="res://scenes/objects/door.tscn" type="PackedScene" id=3]
-[ext_resource path="res://scenes/world_plane/world_plane.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/custom_plane/custom_plane.gd" type="Script" id=5]
 [ext_resource path="res://scenes/locations/school.gd" type="Script" id=6]
 [ext_resource path="res://assets/textures/TexturesCom_BrickSmallDark0001_1_seamless_S.jpg" type="Texture" id=7]
 [ext_resource path="res://scenes/bases/building/building.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/bases/room/room.tscn" type="PackedScene" id=9]
+[ext_resource path="res://assets/textures/TexturesCom_Grass0130_1_seamless_S.jpg" type="Texture" id=10]
 
 [node name="School" type="Spatial"]
 script = ExtResource( 6 )
 
 [node name="Building" parent="." instance=ExtResource( 8 )]
 outer_wall = NodePath("FrontWall")
-rect = Rect2( -6, 0, 12, 3 )
+rect = Rect2( -6, -6, 12, 9 )
 
-[node name="Carpet" parent="Building" instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
-size = Vector2( 12, 3 )
-collision_side = 2
-texture = ExtResource( 2 )
-centered_x = true
-pixel_size = 0.003
+[node name="Carpet" type="Spatial" parent="Building"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, -6, 0, 0 )
+script = ExtResource( 5 )
+front_texture = ExtResource( 2 )
+uv_scale = 4.0
+dimensions = Vector2( 12, 3 )
+collision_enabled = false
+rects = [ Rect2( 0, 0, 12, 3 ) ]
 
 [node name="Right Door" parent="Building" instance=ExtResource( 3 )]
 transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 6, 0, 1 )
@@ -56,11 +58,108 @@ centered_x = true
 dimensions = Vector2( 12, 3 )
 rects = [ Rect2( 0, 0, 12, 3 ) ]
 
-[node name="BackWall" type="Spatial" parent="Building"]
+[node name="MiddleWall" type="Spatial" parent="Building"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0, 0, -6 )
+script = ExtResource( 5 )
+front_texture = ExtResource( 1 )
+uv_scale = 3.0
+rects = [ Rect2( 0, 0, 6, 3 ) ]
+
+[node name="Classroom1" parent="Building" instance=ExtResource( 9 )]
+outer_wall = NodePath("FrontWall")
+rect = Rect2( -6, -6, 6, 6 )
+avoid_fading = [ NodePath("../MiddleWall") ]
+
+[node name="Door" parent="Building/Classroom1" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0 )
+
+[node name="Carpet" type="Spatial" parent="Building/Classroom1"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, -6, 0, -6 )
+script = ExtResource( 5 )
+front_texture = ExtResource( 2 )
+uv_scale = 4.0
+dimensions = Vector2( 6, 6 )
+collision_enabled = false
+rects = [ Rect2( 0, 0, 6, 6 ) ]
+
+[node name="LeftWall" type="Spatial" parent="Building/Classroom1"]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -6, 0, 0 )
 script = ExtResource( 5 )
 front_texture = ExtResource( 1 )
 back_texture = ExtResource( 7 )
 uv_scale = 3.0
+rects = [ Rect2( 0, 0, 6, 3 ) ]
+
+[node name="BackWall" type="Spatial" parent="Building/Classroom1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -6 )
+script = ExtResource( 5 )
+front_texture = ExtResource( 1 )
+back_texture = ExtResource( 7 )
+uv_scale = 3.0
+rects = [ Rect2( 0, 0, 6, 3 ) ]
+
+[node name="FrontWall" type="Spatial" parent="Building/Classroom1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, 0 )
+script = ExtResource( 5 )
+front_texture = ExtResource( 1 )
+uv_scale = 3.0
+dimensions = Vector2( 6, 3 )
+rects = [ Rect2( 0, 0, 4, 2 ), Rect2( 0, 2, 6, 1 ), Rect2( 5, 0, 1, 2 ) ]
+
+[node name="Classroom2" parent="Building" instance=ExtResource( 9 )]
+outer_wall = NodePath("FrontWall")
+rect = Rect2( 0, -6, 6, 6 )
+avoid_fading = [ NodePath("../MiddleWall") ]
+
+[node name="Door" parent="Building/Classroom2" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0 )
+
+[node name="Carpet" type="Spatial" parent="Building/Classroom2"]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, -6 )
+script = ExtResource( 5 )
+front_texture = ExtResource( 2 )
+uv_scale = 4.0
+dimensions = Vector2( 6, 6 )
+collision_enabled = false
+rects = [ Rect2( 0, 0, 6, 6 ) ]
+
+[node name="LeftWall" type="Spatial" parent="Building/Classroom2"]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 6, 0, 0 )
+script = ExtResource( 5 )
+front_texture = ExtResource( 7 )
+back_texture = ExtResource( 1 )
+uv_scale = 3.0
+rects = [ Rect2( 0, 0, 6, 3 ) ]
+
+[node name="BackWall" type="Spatial" parent="Building/Classroom2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -6 )
+script = ExtResource( 5 )
+front_texture = ExtResource( 1 )
+back_texture = ExtResource( 7 )
+uv_scale = 3.0
+rects = [ Rect2( 0, 0, 6, 3 ) ]
+
+[node name="RightWall" type="Spatial" parent="Building/Classroom2"]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0, 0, -6 )
+script = ExtResource( 5 )
+front_texture = ExtResource( 1 )
+uv_scale = 3.0
+rects = [ Rect2( 0, 0, 6, 3 ) ]
+
+[node name="FrontWall" type="Spatial" parent="Building/Classroom2"]
+script = ExtResource( 5 )
+front_texture = ExtResource( 1 )
+uv_scale = 3.0
+dimensions = Vector2( 6, 3 )
+rects = [ Rect2( 0, 0, 4, 2 ), Rect2( 0, 2, 6, 1 ), Rect2( 5, 0, 1, 2 ) ]
+
+[node name="Grass" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+script = ExtResource( 5 )
+front_texture = ExtResource( 10 )
+uv_scale = 3.0
 centered_x = true
-dimensions = Vector2( 12, 3 )
-rects = [ Rect2( 0, 0, 12, 3 ) ]
+centered_y = true
+dimensions = Vector2( 100, 100 )
+rects = [ Rect2( 0, 0, 100, 100 ) ]
+mesh_translation = Vector3( 0, 0, 0.001 )

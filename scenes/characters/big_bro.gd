@@ -10,13 +10,15 @@ var inside = null
 
 onready var state_machine = $AnimationTree.get("parameters/playback")
 onready var body = $CharacterPlane
-onready var camera = get_node("/root/Main/Camera")
+onready var camera = get_viewport().get_camera()
+onready var world = get_node("/root/Main/WorldEnvironment")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	state_machine.start("Idle Right")
 
 func _physics_process(_delta):
+	interact = null
 	var interacts = $CharacterPlane/Interact.get_overlapping_bodies()
 	var close_dist = INF
 	for i in interacts:
@@ -53,20 +55,26 @@ func _physics_process(_delta):
 
 	camera.update_position(body.global_transform.origin)
 	
+	var point = Vector2(body.global_transform.origin.x, body.global_transform.origin.z)
+	var cont = false
+	
 	for building in get_tree().get_nodes_in_group("Buildings"):
-		var cont = building.get_rect().has_point(
-			Vector2(body.global_transform.origin.x, body.global_transform.origin.z))
+		cont = building.get_rect().has_point(point)
 		if cont:
 			if not inside:
 				building.enter()
-				camera.darken()
+				world.darken()
 				inside = building
 			elif inside != building:
 				inside.exit()
 				building.enter()
 				inside = building
-		elif inside:
-			inside.exit()
-			camera.lighten()
-			inside = null
+			break
 	
+	if not cont and inside:
+		inside.exit()
+		world.lighten()
+		inside = null
+		
+	if inside:
+		inside.check_rooms(point)

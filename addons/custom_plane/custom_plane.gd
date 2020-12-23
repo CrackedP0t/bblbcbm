@@ -4,6 +4,8 @@ extends Spatial
 
 class_name CustomPlane, "res://addons/custom_plane/mesh_icon.png"
 
+const fade_time = 0.5
+
 export(Texture) var front_texture = null setget set_front_texture
 export(Texture) var back_texture = null setget set_back_texture
 export var uv_scale = 1.0 setget set_uv_scale
@@ -12,14 +14,18 @@ export var centered_x = false setget set_centered_x
 export var centered_y = false setget set_centered_y
 export var dimensions = Vector2(3, 3) setget set_dimensions
 export var collision_depth = 0.1 setget set_collision_depth
+export var collision_enabled = true
 export(Array, Rect2) var rects = [] setget set_rects
 export(Vector3) var mesh_rotation setget set_mesh_rotation, get_mesh_rotation
 export(Vector3) var mesh_translation setget set_mesh_translation, get_mesh_translation
 
+onready var material = create_material()
+
 var surface_tool
 var mesh_instance = MeshInstance.new()
 var body = create_body()
-onready var material = create_material()
+var fade = 1.0
+var fade_direction = 0
 
 func set_front_texture(new):
 	front_texture = new
@@ -52,7 +58,6 @@ func set_dimensions(new):
 	
 func set_collision_depth(new):
 	collision_depth = new
-	gen_mesh()
 	
 func set_rects(new):
 	rects = new
@@ -130,10 +135,26 @@ func create_material():
 	
 	return m
 
+func _init():
+	add_to_group("Fadable")	
+
 func _ready():
 	gen_mesh()
 	add_child(body)
 	add_child(mesh_instance)
+	
+func _process(delta):
+	fade = clamp(fade + fade_direction * delta * 1 / fade_time, 0.0, 1.0)
+	material.albedo_color = Color(fade, fade, fade, 1.0)
+	
+	if back_texture:
+		material.next_pass.albedo_color = Color(fade, fade, fade, 1.0)
+		
+func fade_in():
+	fade_direction = 1
+	
+func fade_out():
+	fade_direction = -1
 	
 func gen_mesh():
 	for shape in body.get_children():
@@ -146,15 +167,16 @@ func gen_mesh():
 	surface_tool.set_material(material)
 	
 	for rect in rects:
-		var col = CollisionShape.new()
-		col.translation = Vector3(rect.position.x + rect.size.x / 2 - int(centered_x) * dimensions.x / 2,
-			rect.position.y + rect.size.y / 2 - int(centered_y) * dimensions.y / 2,
-			0)
-		var shape = BoxShape.new()
-		shape.extents = Vector3(rect.size.x / 2, rect.size.y / 2, collision_depth)
-		
-		col.shape = shape
-		body.add_child(col)
+		if collision_enabled:
+			var col = CollisionShape.new()
+			col.translation = Vector3(rect.position.x + rect.size.x / 2 - int(centered_x) * dimensions.x / 2,
+				rect.position.y + rect.size.y / 2 - int(centered_y) * dimensions.y / 2,
+				0)
+			var shape = BoxShape.new()
+			shape.extents = Vector3(rect.size.x / 2, rect.size.y / 2, collision_depth)
+			
+			col.shape = shape
+			body.add_child(col)
 		
 		add_rect(rect.position.x, rect.position.y, rect.size.x, rect.size.y)
 	

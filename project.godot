@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "GitAPI",
 "language": "NativeScript",
 "path": "res://git_api.gdns"
+}, {
+"base": "Spatial",
+"class": "Room",
+"language": "GDScript",
+"path": "res://scenes/bases/room/room.gd"
 } ]
 _global_script_class_icons={
 "CustomPlane": "res://addons/custom_plane/mesh_icon.png",
-"GitAPI": ""
+"GitAPI": "",
+"Room": ""
 }
 
 [application]
@@ -32,7 +38,6 @@ config/icon="res://icon.png"
 
 [debug]
 
-settings/stdout/print_fps=true
 shapes/collision/shape_color=Color( 0, 0.858824, 1, 1 )
 
 [display]

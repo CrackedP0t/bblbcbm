@@ -1,35 +1,23 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/characters/big_bro.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/locations/school.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/textures/CasualDay4K.jpg" type="Texture" id=3]
 [ext_resource path="res://scenes/characters/lil_bro.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scenes/camera.gd" type="Script" id=5]
+[ext_resource path="res://scenes/world_environment.gd" type="Script" id=6]
 
-[sub_resource type="Environment" id=1]
-background_mode = 1
-ambient_light_color = Color( 1, 1, 1, 1 )
+[sub_resource type="PanoramaSky" id=1]
+panorama = ExtResource( 3 )
 
-[sub_resource type="Animation" id=2]
-resource_name = "Darken"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:environment:background_color")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 0.529412, 0.807843, 0.921569, 1 ), Color( 0, 0, 0, 1 ) ]
-}
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
 
 [sub_resource type="Animation" id=3]
-resource_name = "Lighten"
 length = 0.5
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:environment:background_color")
+tracks/0/path = NodePath(".:environment:background_energy")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -38,19 +26,37 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ Color( 0, 0, 0, 1 ), Color( 0.529412, 0.807843, 0.921569, 1 ) ]
+"values": [ 1.0, 0.0 ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:environment:background_energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
 }
 
 [node name="Main" type="Spatial"]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
+script = ExtResource( 6 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="WorldEnvironment"]
+anims/Darken = SubResource( 3 )
+anims/Lighten = SubResource( 4 )
+
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.985955, 0.16701, 0, -0.16701, 0.985955, 0, 1.5, 4 )
-environment = SubResource( 1 )
 script = ExtResource( 5 )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera"]
-anims/Darken = SubResource( 2 )
-anims/Lighten = SubResource( 3 )
 
 [node name="BigBro" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.5 )
