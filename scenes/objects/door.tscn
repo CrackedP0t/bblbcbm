@@ -1,0 +1,155 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/textures/wooden door.png" type="Texture" id=1]
+[ext_resource path="res://scenes/character_plane/character_plane.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/objects/door.gd" type="Script" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "Close Behind"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterPlane:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 90, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "disable_collision"
+}, {
+"args": [  ],
+"method": "enable_collision"
+} ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "Close Front"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterPlane:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, -90, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "disable_collision"
+}, {
+"args": [  ],
+"method": "enable_collision"
+} ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "Open Behind"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterPlane:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 90, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "disable_collision"
+}, {
+"args": [  ],
+"method": "enable_collision"
+} ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Open Front"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterPlane:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, -90, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "disable_collision"
+}, {
+"args": [  ],
+"method": "enable_collision"
+} ]
+}
+
+[node name="Door" type="Spatial"]
+script = ExtResource( 3 )
+
+[node name="CharacterPlane" parent="." instance=ExtResource( 2 )]
+collision_layer = 10
+collision_mask = 9
+size = Vector2( 1, 2 )
+lock_scale = 2
+texture = ExtResource( 1 )
+centered_x = false
+sprite_centered = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+"anims/Close Behind" = SubResource( 1 )
+"anims/Close Front" = SubResource( 4 )
+"anims/Open Behind" = SubResource( 2 )
+"anims/Open Front" = SubResource( 3 )

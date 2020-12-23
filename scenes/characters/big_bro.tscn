@@ -1,0 +1,233 @@
+[gd_scene load_steps=28 format=2]
+
+[ext_resource path="res://assets/textures/Big bro.png" type="Texture" id=1]
+[ext_resource path="res://scenes/characters/big_bro.gd" type="Script" id=2]
+[ext_resource path="res://scenes/character_plane/character_plane.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CylinderShape" id=1]
+radius = 0.5
+height = 1.0
+
+[sub_resource type="CylinderShape" id=2]
+radius = 0.4
+height = 1.0
+
+[sub_resource type="Animation" id=3]
+resource_name = "Idle Left"
+length = 0.32
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterPlane:sprite_translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CharacterPlane:sprite_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, -180, 0 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "Idle Right"
+length = 0.32
+loop = true
+step = 0.08
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterPlane:sprite_translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CharacterPlane:sprite_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Walk Left"
+length = 0.32
+loop = true
+step = 0.08
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterPlane:sprite_translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.08, 0.16, 0.24 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( -0.08, 0.1, 0 ), Vector3( 0, 0, 0 ), Vector3( 0, 0.1, 0.08 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CharacterPlane:sprite_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.08, 0.16, 0.24 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, -180, 0 ), Vector3( 0, -180, 10 ), Vector3( 0, -180, 0 ), Vector3( 0, -180, -10 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "Walk Right"
+length = 0.32
+loop = true
+step = 0.08
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterPlane:sprite_translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.08, 0.16, 0.24 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( -0.08, 0.1, 0 ), Vector3( 0, 0, 0 ), Vector3( 0, 0.1, 0.08 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("CharacterPlane:sprite_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.08, 0.16, 0.24 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 10 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, -10 ) ]
+}
+
+[sub_resource type="AnimationNodeAnimation" id=7]
+animation = "Idle Left"
+
+[sub_resource type="AnimationNodeAnimation" id=8]
+animation = "Idle Right"
+
+[sub_resource type="AnimationNodeAnimation" id=9]
+animation = "Walk Left"
+
+[sub_resource type="AnimationNodeAnimation" id=10]
+animation = "Walk Right"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=11]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=12]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=13]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=14]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=15]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=16]
+xfade_time = 0.1
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=17]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=18]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=19]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=20]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=21]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=22]
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachine" id=23]
+"states/Idle Left/node" = SubResource( 7 )
+"states/Idle Left/position" = Vector2( 84, 144 )
+"states/Idle Right/node" = SubResource( 8 )
+"states/Idle Right/position" = Vector2( 460, 137 )
+"states/Walk Left/node" = SubResource( 9 )
+"states/Walk Left/position" = Vector2( 134, 333 )
+"states/Walk Right/node" = SubResource( 10 )
+"states/Walk Right/position" = Vector2( 442, 318 )
+transitions = [ "Walk Right", "Walk Left", SubResource( 11 ), "Walk Left", "Walk Right", SubResource( 12 ), "Idle Left", "Walk Left", SubResource( 13 ), "Walk Left", "Idle Left", SubResource( 14 ), "Walk Right", "Idle Right", SubResource( 15 ), "Idle Right", "Walk Right", SubResource( 16 ), "Idle Right", "Walk Left", SubResource( 17 ), "Walk Left", "Idle Right", SubResource( 18 ), "Idle Left", "Walk Right", SubResource( 19 ), "Walk Right", "Idle Left", SubResource( 20 ), "Idle Left", "Idle Right", SubResource( 21 ), "Idle Right", "Idle Left", SubResource( 22 ) ]
+graph_offset = Vector2( -259, 109 )
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=24]
+
+[node name="BigBro" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="CharacterPlane" parent="." instance=ExtResource( 3 )]
+collision_layer = 1
+collision_mask = 2
+size = Vector2( 0.589958, 1 )
+texture = ExtResource( 1 )
+sprite_rotation = Vector3( 0, 180, 0 )
+
+[node name="Interact" type="Area" parent="CharacterPlane"]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape" type="CollisionShape" parent="CharacterPlane/Interact"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
+shape = SubResource( 1 )
+
+[node name="Chase" type="Area" parent="CharacterPlane"]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="CharacterPlane/Chase"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
+shape = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+"anims/Idle Left" = SubResource( 3 )
+"anims/Idle Right" = SubResource( 4 )
+"anims/Walk Left" = SubResource( 5 )
+"anims/Walk Right" = SubResource( 6 )
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 23 )
+anim_player = NodePath("../AnimationPlayer")
+active = true
+process_mode = 0
+parameters/playback = SubResource( 24 )
