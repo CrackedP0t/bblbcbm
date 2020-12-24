@@ -134,7 +134,9 @@ tracks/1/keys = {
 } ]
 }
 
-[node name="Door" type="Spatial"]
+[node name="Door" type="Spatial" groups=[
+"Fadable",
+]]
 script = ExtResource( 3 )
 
 [node name="CharacterPlane" parent="." instance=ExtResource( 2 )]
