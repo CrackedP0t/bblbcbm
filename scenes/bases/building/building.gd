@@ -18,12 +18,6 @@ func get_rect():
 	return r
 
 func _ready():
-	for plane in get_tree().get_nodes_in_group("Fadable"):
-		var plane_parent = plane.get_parent()
-		if plane_parent != self and plane_parent.get_parent() != self:
-			to_fade.append(plane)
-		elif plane_parent == self or plane_parent.get_parent() == self:
-			room_fade.append(plane)
 	
 	for n in self.get_children():
 		if n is Room:

@@ -6,12 +6,11 @@ var gravity = Vector3(0, 0, 0)
 var direction = "Right"
 var velocity = Vector3()
 var interact = null
-var inside = null
+var inside = []
 
 onready var state_machine = $AnimationTree.get("parameters/playback")
 onready var body = $CharacterPlane
 onready var camera = get_viewport().get_camera()
-onready var world = get_node("/root/Main/WorldEnvironment")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -58,23 +57,9 @@ func _physics_process(_delta):
 	var point = Vector2(body.global_transform.origin.x, body.global_transform.origin.z)
 	var cont = false
 	
-	for building in get_tree().get_nodes_in_group("Buildings"):
-		cont = building.get_rect().has_point(point)
+	for room in get_tree().get_nodes_in_group("Rooms"):
+		cont = room.get_rect().has_point(point)
 		if cont:
-			if not inside:
-				building.enter()
-				world.darken()
-				inside = building
-			elif inside != building:
-				inside.exit()
-				building.enter()
-				inside = building
-			break
-	
-	if not cont and inside:
-		inside.exit()
-		world.lighten()
-		inside = null
-		
-	if inside:
-		inside.check_rooms(point)
+			room.enter()
+		else:
+			room.exit()

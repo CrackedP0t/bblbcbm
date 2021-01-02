@@ -14,10 +14,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/custom_plane/custom_plane.gd"
 }, {
-"base": "Reference",
-"class": "Fadable",
+"base": "Node",
+"class": "Fader",
 "language": "GDScript",
-"path": "res://scripts/fadable.gd"
+"path": "res://scripts/fader.gd"
 }, {
 "base": "",
 "class": "GitAPI",
@@ -31,7 +31,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "CustomPlane": "res://addons/custom_plane/mesh_icon.png",
-"Fadable": "",
+"Fader": "",
 "GitAPI": "",
 "Room": ""
 }
@@ -44,8 +44,6 @@ config/icon="res://icon.png"
 
 [debug]
 
-settings/fps/force_fps=60
-settings/stdout/print_fps=true
 shapes/collision/shape_color=Color( 0, 0.858824, 1, 1 )
 
 [display]
@@ -60,7 +58,6 @@ enabled=PoolStringArray( "custom_plane" )
 [gdnative]
 
 singletons=[ "res://git_api.gdnlib" ]
-completion/autocomplete_setters_and_getters=false
 
 [input]
 
@@ -99,9 +96,10 @@ interact={
 
 [rendering]
 
+quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
 vram_compression/import_etc2=false
 quality/shadows/filter_mode=0
 quality/filters/use_nearest_mipmap_filter=true
-quality/filters/msaa=3
+quality/filters/msaa=4
 environment/default_environment="res://default_env.tres"

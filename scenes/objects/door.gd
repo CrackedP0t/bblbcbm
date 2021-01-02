@@ -1,24 +1,14 @@
 extends Spatial
 
-const fade_time = 0.5
-
 export var open = false
 
 onready var sprite_3d = $CharacterPlane/Sprite3D
+onready var fader = $Fader
 
-var fade = 1.0
-var fade_direction = 0
-
-func _process(delta):
-	fade = clamp(fade + fade_direction * delta * 1 / fade_time, 0.0, 1.0)
+func _process(_delta):
+	var fade = fader.fade
 	sprite_3d.modulate = Color(fade, fade, fade, 1.0)
-		
-func fade_in():
-	fade_direction = 1
 	
-func fade_out():
-	fade_direction = -1
-
 func interact(i_transform):
 	if open:
 		$AnimationPlayer.play("Close " + open)

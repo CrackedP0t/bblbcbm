@@ -1,15 +1,18 @@
-extends Reference
+extends Node
 
-class_name Fadable
+class_name Fader
 
 const fade_time = 0.5
 
-var fade = 1.0
+export var fade = 1.0
 var fade_direction = 0
 
-func process(delta):
+func _ready():
+	self.name = "Fader"
+	add_to_group("Faders")
+
+func _process(delta):
 	fade = clamp(fade + fade_direction * delta * 1 / fade_time, 0.0, 1.0)
-	return fade
 	
 func fade_in():
 	fade_direction = 1

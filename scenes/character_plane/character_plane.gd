@@ -15,22 +15,13 @@ export(int, "Disabled", "Discard", "Opaque Pre-Pass") var alpha_cut = 0 setget s
 export var sprite_centered = true setget set_sprite_centered
 export(Vector3) var sprite_translation = Vector3.ZERO setget set_sprite_translation
 export(Vector3) var sprite_rotation = Vector3.ZERO setget set_sprite_rotation
-export var should_fade = false
 
-var fadable = Fadable.new()
+onready var fader = get_node_or_null("Fader")
 
-func _process(delta):
-	if should_fade:
-		var fade = fadable.process(delta)
+func _process(_delta):
+	if fader:
+		var fade = fader.fade
 		$Sprite3D.modulate = Color(fade, fade, fade)
-	
-func fade_in():
-	if should_fade:
-		fadable.fade_in()
-	
-func fade_out():
-	if should_fade:
-		fadable.fade_out()
 
 func set_size(new):
 	size = new

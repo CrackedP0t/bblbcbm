@@ -24,8 +24,7 @@ onready var material = create_material()
 var surface_tool
 var mesh_instance = MeshInstance.new()
 var body = create_body()
-var fade = 1.0
-var fade_direction = 0
+var fader = Fader.new()
 
 func set_front_texture(new):
 	front_texture = new
@@ -135,26 +134,18 @@ func create_material():
 	
 	return m
 
-func _init():
-	add_to_group("Fadable")	
-
 func _ready():
 	gen_mesh()
 	add_child(body)
 	add_child(mesh_instance)
+	add_child(fader)
 	
 func _process(delta):
-	fade = clamp(fade + fade_direction * delta * 1 / fade_time, 0.0, 1.0)
+	var fade = fader.fade
 	material.albedo_color = Color(fade, fade, fade, 1.0)
 	
 	if back_texture:
 		material.next_pass.albedo_color = Color(fade, fade, fade, 1.0)
-		
-func fade_in():
-	fade_direction = 1
-	
-func fade_out():
-	fade_direction = -1
 	
 func gen_mesh():
 	for shape in body.get_children():

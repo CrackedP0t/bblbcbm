@@ -6,9 +6,14 @@ export(NodePath) var outer_wall = null
 export(Rect2) var rect = Rect2(0, 0, 1, 1)
 export(Array, NodePath) var avoid_fading = []
 
+onready var parent = get_parent()
+onready var world = get_node("/root/Main/WorldEnvironment")
+onready var location = is_in_group("Locations")
+
 var animation_player = AnimationPlayer.new()
 var entered = false
-var to_fade
+var to_fade = []
+var rooms = []
 
 func get_rect():
 	var r = rect
@@ -16,6 +21,16 @@ func get_rect():
 	return r
 
 func _ready():
+	for i in len(avoid_fading):
+		avoid_fading[i] = get_node(avoid_fading[i]).get_node("Fader")
+	for child in get_children():
+		if child.is_in_group("Rooms"):
+			rooms.append(child)
+			continue
+		var fader = child.get_node_or_null("Fader")
+		if fader:
+			to_fade.append(fader)
+	
 	if outer_wall:
 		var open = Animation.new()
 		open.length = 0.5
@@ -37,26 +52,36 @@ func _ready():
 		
 		add_child(animation_player)
 
+func fade_in(except=null, avoid=[]):
+	if location:
+		world.lighten()
+	for fader in to_fade:
+		if not (fader in avoid):
+			fader.fade_in()
+	for room in rooms:
+		if room != except:
+			room.fade_in()
+		
+func fade_out(except=null, avoid=[]):
+	if location:
+		world.darken()
+	for fader in to_fade:
+		if not (fader in avoid):
+			fader.fade_out()
+	for room in rooms:
+		if room != except:
+			room.fade_out()
+
 func enter():
-	for plane in to_fade:
-		var avoid = false
-		for avoid_plane in avoid_fading:
-			if get_node(avoid_plane) == plane:
-				avoid = true
-				break
-		if not avoid and plane.get_parent() != self:
-			plane.fade_out()
-	if outer_wall:
-		animation_player.play("Open")
+	if not entered:
+		parent.fade_out(self, avoid_fading)
+		if outer_wall:
+			animation_player.play("Open")
+	entered = true
 
 func exit():
-	for plane in to_fade:
-		var avoid = false
-		for avoid_plane in avoid_fading:
-			if get_node(avoid_plane) == plane:
-				avoid = true
-				break
-		if not avoid and plane.get_parent() != self:
-			plane.fade_in()
-	if outer_wall:
-		animation_player.play("Close")
+	if entered:
+		parent.fade_in(self, avoid_fading)
+		if outer_wall:
+			animation_player.play("Close")
+	entered = false
