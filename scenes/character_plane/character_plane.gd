@@ -21,7 +21,7 @@ onready var fader = get_node_or_null("Fader")
 func _process(_delta):
 	if fader:
 		var fade = fader.fade
-		$Sprite3D.modulate = Color(fade, fade, fade)
+		$Sprite3D.modulate = Color(fade, fade, fade, fade)
 
 func set_size(new):
 	size = new
